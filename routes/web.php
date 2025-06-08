@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -14,37 +15,27 @@ Route::resource('kategori', KategoriController::class)->except(['show']);
 Route::get('/produk/{id}', [DashboardController::class, 'show'])->name('produk.show');
 
 // ===================================
-// RUTE MAKANAN (FOOD)
+// RUTE MAKANAN (VERSI SEDERHANA)
 // ===================================
-Route::prefix('food')->name('produk.food.')->group(function () {
-    Route::get('/', [DashboardController::class, 'food'])->name('index');
-    Route::get('/create', [DashboardController::class, 'createFood'])->name('create');
-    Route::post('/', [DashboardController::class, 'storeFood'])->name('store');
-    Route::get('/{id}/edit', [DashboardController::class, 'editFood'])->name('edit');
-    Route::put('/{id}', [DashboardController::class, 'updateFood'])->name('update');
-    Route::delete('/{id}', [DashboardController::class, 'deleteFood'])->name('delete');
-    
-    // PERBAIKAN: Ubah dari DELETE ke POST untuk bulk delete
-    Route::post('/bulk-delete', [DashboardController::class, 'bulkDeleteFood'])->name('bulkDelete');
-    
-    Route::get('/export/pdf', [DashboardController::class, 'exportFoodPDF'])->name('export.pdf');
-    Route::get('/export/excel', [DashboardController::class, 'exportFoodExcel'])->name('export.excel');
-});
+Route::get('/food', [DashboardController::class, 'food'])->name('produk.food.index');
+Route::get('/food/create', [DashboardController::class, 'createFood'])->name('produk.food.create');
+Route::post('/food', [DashboardController::class, 'storeFood'])->name('produk.food.store');
+Route::post('/food-bulk-delete', [DashboardController::class, 'bulkDeleteFood'])->name('produk.food.bulkDelete');
+Route::get('/food/export/pdf', [DashboardController::class, 'exportFoodPDF'])->name('produk.food.export.pdf');
+Route::get('/food/export/excel', [DashboardController::class, 'exportFoodExcel'])->name('produk.food.export.excel');
+Route::get('/food/{id}/edit', [DashboardController::class, 'editFood'])->name('produk.food.edit');
+Route::put('/food/{id}', [DashboardController::class, 'updateFood'])->name('produk.food.update');
+Route::delete('/food/{id}', [DashboardController::class, 'deleteFood'])->name('produk.food.delete');
 
 // ===================================
-// RUTE MINUMAN (DRINK)
+// RUTE MINUMAN (VERSI SEDERHANA)
 // ===================================
-Route::prefix('drink')->name('produk.drink.')->group(function () {
-    Route::get('/', [DashboardController::class, 'drink'])->name('index');
-    Route::get('/create', [DashboardController::class, 'createDrink'])->name('create');
-    Route::post('/', [DashboardController::class, 'storeDrink'])->name('store');
-    Route::get('/{id}/edit', [DashboardController::class, 'editDrink'])->name('edit');
-    Route::put('/{id}', [DashboardController::class, 'updateDrink'])->name('update');
-    Route::delete('/{id}', [DashboardController::class, 'deleteDrink'])->name('delete');
-    
-    // PERBAIKAN: Ubah dari DELETE ke POST untuk bulk delete
-    Route::post('/bulk-delete', [DashboardController::class, 'bulkDeleteDrink'])->name('bulkDelete');
-    
-    Route::get('/export/pdf', [DashboardController::class, 'exportDrinkPDF'])->name('export.pdf');
-    Route::get('/export/excel', [DashboardController::class, 'exportDrinkExcel'])->name('export.excel');
-});
+Route::get('/drink', [DashboardController::class, 'drink'])->name('produk.drink.index');
+Route::get('/drink/create', [DashboardController::class, 'createDrink'])->name('produk.drink.create');
+Route::post('/drink', [DashboardController::class, 'storeDrink'])->name('produk.drink.store');
+Route::post('/drink-bulk-delete', [DashboardController::class, 'bulkDeleteDrink'])->name('produk.drink.bulkDelete');
+Route::get('/drink/export/pdf', [DashboardController::class, 'exportDrinkPDF'])->name('produk.drink.export.pdf');
+Route::get('/drink/export/excel', [DashboardController::class, 'exportDrinkExcel'])->name('produk.drink.export.excel');
+Route::get('/drink/{id}/edit', [DashboardController::class, 'editDrink'])->name('produk.drink.edit');
+Route::put('/drink/{id}', [DashboardController::class, 'updateDrink'])->name('produk.drink.update');
+Route::delete('/drink/{id}', [DashboardController::class, 'deleteDrink'])->name('produk.drink.delete');
