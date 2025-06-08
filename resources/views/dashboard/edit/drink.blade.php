@@ -1,27 +1,19 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-{{-- resources/views/dashboard/edit.drink.blade.php --}}
-@extends('layouts.app')
-
-@section('content')
-    @include('dashboard.form', ['kategori' => 'drink', 'produk' => $produk])
-=======
-=======
->>>>>>> Stashed changes
-{{-- resources/views/dashboard/edit.food.blade.php --}}
 @extends('layout')
 
+@section('header', 'Edit Minuman')
+
 @section('content')
-<div class="container">
-    <h3>Edit Minuman</h3>
-    @include('dashboard.form', [
-        'action' => route('produk.drink.update', $produk->id),
-        'method' => 'PUT',
-        'produk' => $produk
-    ])
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold">Edit Minuman</h5>
+    </div>
+    <div class="card-body">
+        @include('dashboard.form', [
+            'action' => route('produk.drink.update', $produk->id),
+            'method' => 'PUT',
+            'produk' => $produk,
+            'kategoris' => $kategoris
+        ])
+    </div>
 </div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 @endsection

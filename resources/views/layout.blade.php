@@ -30,7 +30,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">MyApp</div>
+                <div class="sidebar-brand-text mx-3">Dashboard Restoran</div>
             </a>
 
             <!-- Divider -->
@@ -133,7 +133,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; MyApp 2025</span>
+                        <span>Copyright &copy; Restoran 2025</span>
                     </div>
                 </div>
             </footer>

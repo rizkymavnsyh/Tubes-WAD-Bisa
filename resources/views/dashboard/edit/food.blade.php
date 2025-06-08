@@ -1,26 +1,20 @@
-{{-- resources/views/dashboard/edit.food.blade.php --}}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-@extends('layouts.app')
-
-@section('content')
-    @include('dashboard.form', ['kategori' => 'food', 'produk' => $produk])
-=======
-=======
->>>>>>> Stashed changes
 @extends('layout')
 
+@section('header', 'Edit Makanan')
+@section('title', 'Edit Makanan')
+
 @section('content')
-<div class="container">
-    <h3>Edit Makanan</h3>
-    @include('dashboard.form', [
-        'action' => route('produk.food.update', $produk->id),
-        'method' => 'PUT',
-        'produk' => $produk
-    ])
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Formulir Data Makanan</h6>
+    </div>
+    <div class="card-body">
+        @include('dashboard.form', [
+            'action' => route('produk.food.update', $produk->id),
+            'method' => 'PUT',
+            'produk' => $produk,
+            'kategoris' => $kategoris
+        ])
+    </div>
 </div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 @endsection
