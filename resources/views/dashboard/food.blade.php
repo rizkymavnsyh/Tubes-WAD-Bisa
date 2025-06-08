@@ -5,11 +5,9 @@
 
 @section('content')
 
-<!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800">Data Makanan</h1>
 <p class="mb-4">Kelola semua produk makanan Anda. Tambah, ubah, hapus, dan ekspor data dari tabel di bawah ini.</p>
 
-<!-- DataTables Card -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -18,7 +16,6 @@
         </div>
     </div>
     <div class="card-body">
-        <!-- Filter dan Ekspor -->
         <div class="row mb-3">
             <div class="col-md-8">
                 <form action="{{ route('produk.food.index') }}" method="GET" class="d-flex">
@@ -44,61 +41,61 @@
             </div>
         </div>
         
-        <!-- Form Aksi Massal -->
         <form action="{{ route('produk.food.bulkDelete') }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus semua item yang dipilih?');">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger btn-sm mb-3"><i class="fas fa-trash"></i> Hapus yang Dipilih</button>
-            
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead class="thead-light">
-                        <tr>
-                            <th width="3%"><input type="checkbox" id="select-all"></th>
-                            <th>Gambar</th>
-                            <th>Nama Produk</th>
-                            <th>Kategori</th>
-                            <th>Harga</th>
-                            <th>Stok</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($foods as $food)
-                        <tr class="{{ $food->stok < 10 ? 'table-warning' : '' }}">
-                            <td><input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $food->id }}"></td>
-                            <td>
-                                <img src="{{ $food->gambar ? asset('storage/' . $food->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$food->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
-                            </td>
-                            <td><a href="{{ route('produk.show', $food->id) }}">{{ $food->nama }}</a></td>
-                            <td><span class="badge badge-primary">{{ $food->kategori->nama ?? 'N/A' }}</span></td>
-                            <td>Rp {{ number_format($food->harga) }}</td>
-                            <td>
-                                {{ $food->stok }}
-                                @if($food->stok < 10)
-                                    <i class="fas fa-exclamation-triangle text-warning ml-1" title="Stok rendah!"></i>
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                <a href="{{ route('produk.food.edit', $food->id) }}" class="btn btn-warning btn-circle btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                <form action="{{ route('produk.food.delete', $food->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus"><i class="fas fa-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="text-center">Data tidak ditemukan.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
         </form>
+            
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead class="thead-light">
+                    <tr>
+                        <th width="3%"><input type="checkbox" id="select-all"></th>
+                        <th>Gambar</th>
+                        <th>Nama Produk</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Deskripsi</th> {{-- KOLOM BARU --}}
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($foods as $food)
+                    <tr class="{{ $food->stok < 10 ? 'table-warning' : '' }}">
+                        <td><input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $food->id }}"></td>
+                        <td>
+                            <img src="{{ $food->gambar ? asset('storage/' . $food->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$food->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
+                        </td>
+                        <td><a href="{{ route('produk.show', $food->id) }}">{{ $food->nama }}</a></td>
+                        <td><span class="badge {{($food->kategori->nama ?? '') == 'makanan' ? 'badge-primary' : 'badge-success'}}">{{ $food->kategori->nama ?? 'N/A' }}</span></td>
+                        <td>Rp {{ number_format($food->harga) }}</td>
+                        <td>
+                            {{ $food->stok }}
+                            @if($food->stok < 10)
+                                <i class="fas fa-exclamation-triangle text-warning ml-1" title="Stok rendah!"></i>
+                            @endif
+                        </td>
+                        <td>{{ Str::limit($food->deskripsi, 50, '...') ?? 'N/A' }}</td> {{-- DESKRIPSI DITAMPILKAN --}}
+                        <td class="text-center">
+                            <a href="{{ route('produk.food.edit', $food->id) }}" class="btn btn-warning btn-circle btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                            <form action="{{ route('produk.food.delete', $food->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="8" class="text-center">Data tidak ditemukan.</td> {{-- COLSPAN DISESUAIKAN --}}
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         
-        <!-- Pagination -->
         <div class="mt-3 d-flex justify-content-end">
             {{ $foods->appends(request()->query())->links() }}
         </div>

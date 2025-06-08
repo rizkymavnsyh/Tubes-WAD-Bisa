@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\ProdukExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Barryvdh\DomPDF\Facade\Pdf; // Pastikan menggunakan DomPDF
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log; // Pastikan baris ini ada
 
 class DashboardController extends Controller
 {
@@ -138,7 +139,31 @@ class DashboardController extends Controller
     public function editFood($id) { $produk = Produk::findOrFail($id); $kategoris = Kategori::all(); return view('dashboard.edit.food', compact('produk', 'kategoris')); }
     public function updateFood(Request $request, $id) { $this->updateProduk($request, $id); return redirect()->route('produk.food.index')->with('success', 'Data makanan berhasil diperbarui!'); }
     public function deleteFood($id) { $this->deleteAndCleanProduk($id); return redirect()->route('produk.food.index')->with('success', 'Makanan berhasil dihapus!'); }
-    public function bulkDeleteFood(Request $request) { $ids = $request->input('ids'); if (!empty($ids)) { Produk::whereIn('id', $ids)->get()->each(function($produk) { if($produk->gambar) { Storage::disk('public')->delete($produk->gambar); } $produk->delete(); }); return redirect()->route('produk.food.index')->with('success', 'Produk yang dipilih berhasil dihapus.'); } return redirect()->route('produk.food.index')->with('error', 'Tidak ada produk yang dipilih.'); }
+    public function bulkDeleteFood(Request $request) {
+        $ids = $request->input('ids');
+
+        // --- KODE DEBUGGING INI ---
+        Log::info('BULK DELETE FOOD REQUEST RECEIVED', [
+            'method_received_by_laravel' => $request->method(), // Ini akan menunjukkan apakah Laravel menerima GET/POST/DELETE
+            'url_received_by_laravel' => $request->fullUrl(),
+            'ids_from_request' => $ids, // Data ID yang diterima
+            'all_input' => $request->all() // Semua input yang diterima
+        ]);
+        // --- AKHIR KODE DEBUGGING ---
+
+        if (!empty($ids)) {
+            Produk::whereIn('id', $ids)->get()->each(function($produk) {
+                Log::info('Attempting to delete food product.', ['id' => $produk->id, 'nama' => $produk->nama]);
+                if($produk->gambar) {
+                    Storage::disk('public')->delete($produk->gambar);
+                }
+                $produk->delete();
+            });
+            return redirect()->route('produk.food.index')->with('success', 'Produk yang dipilih berhasil dihapus.');
+        }
+        Log::warning('BULK DELETE FOOD: No products selected or IDs array is empty.');
+        return redirect()->route('produk.food.index')->with('error', 'Tidak ada produk yang dipilih.');
+    }
 
     // SECTION: Minuman
     public function drink(Request $request) { $drinks = $this->getProdukByKategori('minuman', $request); return view('dashboard.drink', compact('drinks')); }
@@ -147,7 +172,31 @@ class DashboardController extends Controller
     public function editDrink($id) { $produk = Produk::findOrFail($id); $kategoris = Kategori::all(); return view('dashboard.edit.drink', compact('produk', 'kategoris')); }
     public function updateDrink(Request $request, $id) { $this->updateProduk($request, $id); return redirect()->route('produk.drink.index')->with('success', 'Data minuman berhasil diperbarui!'); }
     public function deleteDrink($id) { $this->deleteAndCleanProduk($id); return redirect()->route('produk.drink.index')->with('success', 'Minuman berhasil dihapus!'); }
-    public function bulkDeleteDrink(Request $request) { $ids = $request->input('ids'); if (!empty($ids)) { Produk::whereIn('id', $ids)->get()->each(function($produk) { if($produk->gambar) { Storage::disk('public')->delete($produk->gambar); } $produk->delete(); }); return redirect()->route('produk.drink.index')->with('success', 'Produk yang dipilih berhasil dihapus.'); } return redirect()->route('produk.drink.index')->with('error', 'Tidak ada produk yang dipilih.'); }
+    public function bulkDeleteDrink(Request $request) {
+        $ids = $request->input('ids');
+
+        // --- KODE DEBUGGING INI ---
+        Log::info('BULK DELETE DRINK REQUEST RECEIVED', [
+            'method_received_by_laravel' => $request->method(), // Ini akan menunjukkan apakah Laravel menerima GET/POST/DELETE
+            'url_received_by_laravel' => $request->fullUrl(),
+            'ids_from_request' => $ids, // Data ID yang diterima
+            'all_input' => $request->all() // Semua input yang diterima
+        ]);
+        // --- AKHIR KODE DEBUGGING ---
+
+        if (!empty($ids)) {
+            Produk::whereIn('id', $ids)->get()->each(function($produk) {
+                Log::info('Attempting to delete drink product.', ['id' => $produk->id, 'nama' => $produk->nama]);
+                if($produk->gambar) {
+                    Storage::disk('public')->delete($produk->gambar);
+                }
+                $produk->delete();
+            });
+            return redirect()->route('produk.drink.index')->with('success', 'Produk yang dipilih berhasil dihapus.');
+        }
+        Log::warning('BULK DELETE DRINK: No products selected or IDs array is empty.');
+        return redirect()->route('produk.drink.index')->with('error', 'Tidak ada produk yang dipilih.');
+    }
 
     // SECTION: Ekspor Data
     public function exportFoodPDF() { return $this->exportPDF('makanan'); }

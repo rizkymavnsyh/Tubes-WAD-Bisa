@@ -5,12 +5,10 @@
 
 @section('content')
 
-<!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Overview</h1>
 </div>
 
-<!-- Content Row -->
 <div class="row">
 
     <div class="col-xl-3 col-md-6 mb-4">
@@ -106,16 +104,12 @@
     </div>
 </div>
 
-<!-- Content Row -->
 <div class="row">
-    <!-- Area Chart -->
     <div class="col-xl-8 col-lg-7">
         <div class="card shadow mb-4">
-            <!-- Card Header -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">5 Produk Terbaru</h6>
             </div>
-            <!-- Card Body -->
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
@@ -131,7 +125,8 @@
                              @forelse ($produks as $produk)
                             <tr>
                                 <td>{{ $produk->nama }}</td>
-                                <td><span class="badge bg-{{$produk->kategori == 'makanan' ? 'primary' : 'success'}} text-white">{{ ucfirst($produk->kategori) }}</span></td>
+                                {{-- PERBAIKAN: Mengakses nama kategori melalui relasi dan menggunakan kelas badge Bootstrap yang benar --}}
+                                <td><span class="badge {{($produk->kategori->nama ?? '') == 'makanan' ? 'badge-primary' : 'badge-success'}}">{{ ucfirst($produk->kategori->nama ?? 'N/A') }}</span></td>
                                 <td>Rp {{ number_format($produk->harga, 0, ',', '.') }}</td>
                                 <td>{{ $produk->stok }}</td>
                             </tr>
@@ -147,14 +142,11 @@
         </div>
     </div>
 
-    <!-- Pie Chart -->
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
-            <!-- Card Header-->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Komposisi Stok</h6>
             </div>
-            <!-- Card Body -->
             <div class="card-body">
                 <div class="chart-pie pt-4 pb-2">
                     <canvas id="stockPieChart"></canvas>
