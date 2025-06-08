@@ -41,10 +41,13 @@
             </div>
         </div>
         
+        {{-- FORM AKSI MASSAL DIMULAI DI SINI --}}
         <form action="{{ route('produk.drink.bulkDelete') }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus semua item yang dipilih?');">
             @csrf
             @method('DELETE')
+            {{-- Tombol Hapus Massal berada di sini --}}
             <button type="submit" class="btn btn-danger btn-sm mb-3"><i class="fas fa-trash"></i> Hapus yang Dipilih</button>
+        {{-- FORM AKSI MASSAL DITUTUP DI SINI, SEBELUM TABEL! --}}
         </form>
             
         <div class="table-responsive">
@@ -57,7 +60,6 @@
                         <th>Kategori</th>
                         <th>Harga</th>
                         <th>Stok</th>
-                        <th>Deskripsi</th> {{-- KOLOM BARU --}}
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -69,6 +71,7 @@
                             <img src="{{ $drink->gambar ? asset('storage/' . $drink->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$drink->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
                         </td>
                         <td><a href="{{ route('produk.show', $drink->id) }}">{{ $drink->nama }}</a></td>
+                        {{-- Mengakses nama kategori melalui relasi dan menerapkan warna badge dinamis --}}
                         <td><span class="badge {{($drink->kategori->nama ?? '') == 'minuman' ? 'badge-success' : 'badge-primary'}}">{{ $drink->kategori->nama ?? 'N/A' }}</span></td>
                         <td>Rp {{ number_format($drink->harga) }}</td>
                         <td>
@@ -77,9 +80,9 @@
                                 <i class="fas fa-exclamation-triangle text-warning ml-1" title="Stok rendah!"></i>
                             @endif
                         </td>
-                        <td>{{ Str::limit($drink->deskripsi, 50, '...') ?? 'N/A' }}</td> {{-- DESKRIPSI DITAMPILKAN --}}
                         <td class="text-center">
                             <a href="{{ route('produk.drink.edit', $drink->id) }}" class="btn btn-warning btn-circle btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                            {{-- FORM HAPUS SATU PER SATU berada di sini, di LUAR form bulk delete --}}
                             <form action="{{ route('produk.drink.delete', $drink->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
                                 @csrf
                                 @method('DELETE')
@@ -89,7 +92,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center">Data tidak ditemukan.</td> {{-- COLSPAN DISESUAIKAN --}}
+                        <td colspan="7" class="text-center">Data tidak ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>

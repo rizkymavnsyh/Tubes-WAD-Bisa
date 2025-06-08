@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\ProdukExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Log; // Pastikan baris ini ada
+use Barryvdh\DomPDF\Facade\Pdf; // Pastikan menggunakan DomPDF
+use Illuminate\Support\Facades\Log; // Tambahkan ini untuk menggunakan facade Log
 
 class DashboardController extends Controller
 {
@@ -142,10 +142,10 @@ class DashboardController extends Controller
     public function bulkDeleteFood(Request $request) {
         $ids = $request->input('ids');
 
-        // --- KODE DEBUGGING INI ---
+        // --- KODE DEBUGGING BARU ---
         Log::info('BULK DELETE FOOD REQUEST RECEIVED', [
-            'method_received_by_laravel' => $request->method(), // Ini akan menunjukkan apakah Laravel menerima GET/POST/DELETE
-            'url_received_by_laravel' => $request->fullUrl(),
+            'method' => $request->method(), // Harusnya DELETE
+            'url' => $request->fullUrl(),
             'ids_from_request' => $ids, // Data ID yang diterima
             'all_input' => $request->all() // Semua input yang diterima
         ]);
@@ -153,7 +153,7 @@ class DashboardController extends Controller
 
         if (!empty($ids)) {
             Produk::whereIn('id', $ids)->get()->each(function($produk) {
-                Log::info('Attempting to delete food product.', ['id' => $produk->id, 'nama' => $produk->nama]);
+                Log::info('Attempting to delete food product.', ['id' => $produk->id, 'nama' => $produk->nama]); // Log setiap produk yang akan dihapus
                 if($produk->gambar) {
                     Storage::disk('public')->delete($produk->gambar);
                 }
@@ -161,7 +161,7 @@ class DashboardController extends Controller
             });
             return redirect()->route('produk.food.index')->with('success', 'Produk yang dipilih berhasil dihapus.');
         }
-        Log::warning('BULK DELETE FOOD: No products selected or IDs array is empty.');
+        Log::warning('BULK DELETE FOOD: No products selected or IDs array is empty.'); // Log jika IDs kosong
         return redirect()->route('produk.food.index')->with('error', 'Tidak ada produk yang dipilih.');
     }
 
@@ -175,10 +175,10 @@ class DashboardController extends Controller
     public function bulkDeleteDrink(Request $request) {
         $ids = $request->input('ids');
 
-        // --- KODE DEBUGGING INI ---
+        // --- KODE DEBUGGING BARU ---
         Log::info('BULK DELETE DRINK REQUEST RECEIVED', [
-            'method_received_by_laravel' => $request->method(), // Ini akan menunjukkan apakah Laravel menerima GET/POST/DELETE
-            'url_received_by_laravel' => $request->fullUrl(),
+            'method' => $request->method(), // Harusnya DELETE
+            'url' => $request->fullUrl(),
             'ids_from_request' => $ids, // Data ID yang diterima
             'all_input' => $request->all() // Semua input yang diterima
         ]);
@@ -186,7 +186,7 @@ class DashboardController extends Controller
 
         if (!empty($ids)) {
             Produk::whereIn('id', $ids)->get()->each(function($produk) {
-                Log::info('Attempting to delete drink product.', ['id' => $produk->id, 'nama' => $produk->nama]);
+                Log::info('Attempting to delete drink product.', ['id' => $produk->id, 'nama' => $produk->nama]); // Log setiap produk yang akan dihapus
                 if($produk->gambar) {
                     Storage::disk('public')->delete($produk->gambar);
                 }
@@ -194,7 +194,7 @@ class DashboardController extends Controller
             });
             return redirect()->route('produk.drink.index')->with('success', 'Produk yang dipilih berhasil dihapus.');
         }
-        Log::warning('BULK DELETE DRINK: No products selected or IDs array is empty.');
+        Log::warning('BULK DELETE DRINK: No products selected or IDs array is empty.'); // Log jika IDs kosong
         return redirect()->route('produk.drink.index')->with('error', 'Tidak ada produk yang dipilih.');
     }
 
