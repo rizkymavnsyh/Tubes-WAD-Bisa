@@ -1,84 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <title>@yield('title', 'Dashboard')</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@yield('title', 'Dashboard') - MyApp</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Chart.js (Opsional, hanya jika dibutuhkan di halaman tertentu) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Custom CSS -->
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .sidebar {
-            width: 220px;
-            background-color: #343a40;
-            color: #fff;
-        }
-        .sidebar .nav-link {
-            color: #fff;
-        }
-        .sidebar .nav-link.active {
-            background-color: #495057;
-        }
-        .main-content {
-            flex: 1;
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            background-color: #fff;
-            border-bottom: 1px solid #dee2e6;
-        }
-    </style>
-
+    <!-- Custom styles for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
+    
     @stack('styles')
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column p-3">
-        <h4 class="mb-4">MyApp</h4>
-        <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-                <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-                    Dashboard
-                </a>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard.index') }}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">MyApp</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('dashboard.index') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('produk.food') }}" class="nav-link {{ request()->routeIs('produk.food') ? 'active' : '' }}">
-                    Makanan
-                </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Manajemen
+            </div>
+
+            <!-- Nav Item - Kategori -->
+            <li class="nav-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('kategori.index') }}">
+                    <i class="fas fa-fw fa-tags"></i>
+                    <span>Kategori</span></a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('produk.drink') }}" class="nav-link {{ request()->routeIs('produk.drink') ? 'active' : '' }}">
-                    Minuman
-                </a>
+
+            <!-- Nav Item - Makanan -->
+            <li class="nav-item {{ request()->routeIs('produk.food.*') ? 'active' : '' }}">
+                {{-- PERBAIKAN: Nama rute yang benar adalah 'produk.food.index' --}}
+                <a class="nav-link" href="{{ route('produk.food.index') }}">
+                    <i class="fas fa-fw fa-utensils"></i>
+                    <span>Data Makanan</span></a>
             </li>
+
+            <!-- Nav Item - Minuman -->
+            <li class="nav-item {{ request()->routeIs('produk.drink.*') ? 'active' : '' }}">
+                {{-- PERBAIKAN: Nama rute yang benar adalah 'produk.drink.index' --}}
+                <a class="nav-link" href="{{ route('produk.drink.index') }}">
+                    <i class="fas fa-fw fa-cocktail"></i>
+                    <span>Data Minuman</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
         </ul>
-    </div>
+        <!-- End of Sidebar -->
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Navbar -->
-        <nav class="navbar navbar-light px-4 py-2">
-            <span class="navbar-brand mb-0 h4">@yield('header', 'Dashboard')</span>
-        </nav>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Page Content -->
-        <div class="p-4">
-            @yield('content')
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h1 class="h3 mb-0 text-gray-800">@yield('header', 'Dashboard')</h1>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Menampilkan notifikasi -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    @yield('content')
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; MyApp 2025</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
         </div>
-    </div>
+        <!-- End of Content Wrapper -->
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @stack('scripts')
+
 </body>
+
 </html>
