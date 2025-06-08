@@ -7,8 +7,10 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
     protected $kategoriNama;
 
@@ -39,6 +41,7 @@ class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             "Kategori",
             "Harga",
             "Stok",
+            "URL Gambar", // Kolom baru untuk gambar
             "Dibuat Pada",
         ];
     }
@@ -54,7 +57,20 @@ class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             $produk->kategori->nama ?? 'N/A',
             $produk->harga,
             $produk->stok,
+            // Menambahkan URL lengkap ke gambar jika ada
+            $produk->gambar ? asset('storage/' . $produk->gambar) : 'Tidak ada gambar',
             $produk->created_at->format('d-m-Y H:i'),
+        ];
+    }
+
+    /**
+     * Memberikan gaya pada sheet Excel, seperti membuat header menjadi tebal.
+     */
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Memberi gaya pada baris pertama (header)
+            1    => ['font' => ['bold' => true]],
         ];
     }
 }
