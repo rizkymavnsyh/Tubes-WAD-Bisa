@@ -23,7 +23,7 @@
                         <input type="text" name="search" class="form-control" placeholder="Cari nama makanan..." value="{{ request('search') }}">
                     </div>
                     <div class="input-group input-group-sm mr-2" style="max-width: 180px;">
-                        <select class="form-control" name="sort_by" onchange="this.form.submit()">
+                        <select class="form-control" name="sort_by">
                             <option value="terbaru" @if(request('sort_by') == 'terbaru') selected @endif>Urutkan: Terbaru</option>
                             <option value="terlama" @if(request('sort_by') == 'terlama') selected @endif>Urutkan: Terlama</option>
                             <option value="harga_terendah" @if(request('sort_by') == 'harga_terendah') selected @endif>Harga: Terendah</option>
@@ -32,6 +32,7 @@
                             <option value="nama_za" @if(request('sort_by') == 'nama_za') selected @endif>Nama: Z-A</option>
                         </select>
                     </div>
+                    <button class="btn btn-secondary btn-sm" type="submit"><i class="fas fa-filter"></i></button>
                 </form>
             </div>
             <div class="col-md-4 text-right">
@@ -40,10 +41,13 @@
             </div>
         </div>
         
+        {{-- FORM AKSI MASSAL DIHAPUS --}}
+            
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead class="thead-light">
                     <tr>
+                        {{-- Hapus ini: <th width="3%"><input type="checkbox" id="select-all"></th> --}}
                         <th>Gambar</th>
                         <th>Nama Produk</th>
                         <th>Kategori</th>
@@ -56,11 +60,12 @@
                 <tbody>
                     @forelse($foods as $food)
                     <tr class="{{ $food->stok < 10 ? 'table-warning' : '' }}">
+                        {{-- Hapus ini: <td><input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $food->id }}"></td> --}}
                         <td>
                             <img src="{{ $food->gambar ? asset('storage/' . $food->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$food->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
                         </td>
                         <td><a href="{{ route('produk.show', $food->id) }}">{{ $food->nama }}</a></td>
-                        <td><span class="badge badge-primary">{{ $food->kategori->nama ?? 'N/A' }}</span></td>
+                        <td><span class="badge {{($food->kategori->nama ?? '') == 'makanan' ? 'badge-primary' : 'badge-success'}}">{{ $food->kategori->nama ?? 'N/A' }}</span></td>
                         <td>Rp {{ number_format($food->harga) }}</td>
                         <td>
                             {{ $food->stok }}
@@ -80,7 +85,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center">Data tidak ditemukan.</td>
+                        <td colspan="7" class="text-center">Data tidak ditemukan.</td> {{-- COLSPAN DISESUAIKAN --}}
                     </tr>
                     @endforelse
                 </tbody>
@@ -94,3 +99,33 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAll = document.getElementById('select-all');
+        const checkboxes = document.querySelectorAll('.checkbox-item');
+
+        selectAll.addEventListener('change', function () {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (!this.checked) {
+                    selectAll.checked = false;
+                } else {
+                    let allChecked = true;
+                    checkboxes.forEach(cb => {
+                        if (!cb.checked) { allChecked = false; }
+                    });
+                    selectAll.checked = allChecked;
+                }
+            });
+        });
+    });
+</script>
+--}}
+@endpush

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title', 'Dashboard') - Warung Kita</title>
+    <title>@yield('title', 'Dashboard') - MyApp</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css">
@@ -28,9 +28,9 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard.index') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-store"></i>
+                    <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Warung Kita</div>
+                <div class="sidebar-brand-text mx-3">Dashboard Restoran</div>
             </a>
 
             <!-- Divider -->
@@ -48,40 +48,6 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Menu Utama
-            </div>
-
-            <!-- Nav Item - Makanan (Static) -->
-            <li class="nav-item {{ request()->routeIs('dashboard.food') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('dashboard.food') }}">
-                    <i class="fas fa-fw fa-utensils"></i>
-                    <span>Data Makanan</span></a>
-            </li>
-
-            <!-- Nav Item - Minuman (Static) -->
-            <li class="nav-item {{ request()->routeIs('dashboard.drink') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('dashboard.drink') }}">
-                    <i class="fas fa-fw fa-cocktail"></i>
-                    <span>Data Minuman</span></a>
-            </li>
-
-            <!-- Dynamic Category Links from AppServiceProvider -->
-            @if(isset($kategoris_sidebar_dynamic) && $kategoris_sidebar_dynamic->count() > 0)
-                @foreach($kategoris_sidebar_dynamic as $kategori)
-                    <li class="nav-item {{ request()->is('produk/kategori/'.$kategori->id) ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('produk.indexByCategory', $kategori->id) }}">
-                            <i class="fas fa-fw fa-box"></i>
-                            <span>{{ $kategori->nama }}</span>
-                        </a>
-                    </li>
-                @endforeach
-            @endif
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
                 Manajemen
             </div>
 
@@ -89,7 +55,36 @@
             <li class="nav-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('kategori.index') }}">
                     <i class="fas fa-fw fa-tags"></i>
-                    <span>Manajemen Kategori</span></a>
+                    <span>Kategori</span></a>
+            </li>
+
+            <!-- Nav Item - Makanan -->
+            <li class="nav-item {{ request()->routeIs('produk.food.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('produk.food.index') }}">
+                    <i class="fas fa-fw fa-utensils"></i>
+                    <span>Data Makanan</span></a>
+            </li>
+
+            <!-- Nav Item - Minuman -->
+            <li class="nav-item {{ request()->routeIs('produk.drink.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('produk.drink.index') }}">
+                    <i class="fas fa-fw fa-cocktail"></i>
+                    <span>Data Minuman</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Pengembangan
+            </div>
+
+            <!-- Nav Item - Inspirasi Menu (Diperbarui) -->
+            <li class="nav-item {{ request()->routeIs('recipes.external') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('recipes.external') }}">
+                    <i class="fas fa-fw fa-lightbulb"></i>
+                    <span>Inspirasi Menu</span></a>
             </li>
 
             <!-- Divider -->
@@ -115,7 +110,7 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h1 class="h3 mb-0 text-gray-800">@yield('header', 'Halaman Utama')</h1>
+                    <h1 class="h3 mb-0 text-gray-800">@yield('header', 'Dashboard')</h1>
                 </nav>
                 <!-- End of Topbar -->
 
@@ -151,7 +146,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Warung Kita 2025</span>
+                        <span>Copyright &copy; Restoran 2025</span>
                     </div>
                 </div>
             </footer>

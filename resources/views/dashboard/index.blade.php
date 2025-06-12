@@ -26,7 +26,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Stok Makanan</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_food_stock }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_food_stock ?? 0 }}</div>
                     </div>
                     <div class="col-auto"><i class="fas fa-utensils fa-2x text-gray-300"></i></div>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Stok Minuman</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_drinks_stock }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_drinks_stock ?? 0 }}</div>
                     </div>
                     <div class="col-auto"><i class="fas fa-cocktail fa-2x text-gray-300"></i></div>
                 </div>
@@ -47,9 +47,9 @@
         </div>
     </div>
     @php
-        $totalStock = $total_food_stock + $total_drinks_stock;
-        $foodPercentage = $totalStock > 0 ? round(($total_food_stock / $totalStock) * 100) : 0;
-        $drinkPercentage = $totalStock > 0 ? round(($total_drinks_stock / $totalStock) * 100) : 0;
+        $totalStock = ($total_food_stock ?? 0) + ($total_drinks_stock ?? 0);
+        $foodPercentage = $totalStock > 0 ? round((($total_food_stock ?? 0) / $totalStock) * 100) : 0;
+        $drinkPercentage = $totalStock > 0 ? round((($total_drinks_stock ?? 0) / $totalStock) * 100) : 0;
     @endphp
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-info shadow h-100 py-2">
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
         data: {
             labels: ["Makanan", "Minuman"],
             datasets: [{
-                data: [{{ $total_food_stock }}, {{ $total_drinks_stock }}],
+                data: [{{ $total_food_stock ?? 0 }}, {{ $total_drinks_stock ?? 0 }}],
                 backgroundColor: ['#4e73df', '#1cc88a'],
                 hoverBackgroundColor: ['#2e59d9', '#17a673'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -235,13 +235,25 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(topProductsCtx, {
         type: 'bar',
         data: {
-            labels: [@foreach($top_stock_produks as $produk) "{{ \Illuminate\Support\Str::limit($produk->nama, 15) }}", @endforeach],
+            labels: [
+                @isset($top_stock_produks)
+                    @foreach($top_stock_produks as $produk)
+                        "{{ \Illuminate\Support\Str::limit($produk->nama, 15) }}",
+                    @endforeach
+                @endisset
+            ],
             datasets: [{
                 label: "Jumlah Stok",
                 backgroundColor: "#4e73df",
                 hoverBackgroundColor: "#2e59d9",
                 borderColor: "#4e73df",
-                data: [@foreach($top_stock_produks as $produk) {{ $produk->stok }}, @endforeach],
+                data: [
+                    @isset($top_stock_produks)
+                        @foreach($top_stock_produks as $produk)
+                            {{ $produk->stok }},
+                        @endforeach
+                    @endisset
+                ],
                 maxBarThickness: 25,
             }],
         },
@@ -264,13 +276,25 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(topPriceCtx, {
         type: 'bar',
         data: {
-            labels: [@foreach($top_price_produks as $produk) "{{ \Illuminate\Support\Str::limit($produk->nama, 25) }}", @endforeach],
+            labels: [
+                @isset($top_price_produks)
+                    @foreach($top_price_produks as $produk)
+                        "{{ \Illuminate\Support\Str::limit($produk->nama, 25) }}",
+                    @endforeach
+                @endisset
+            ],
             datasets: [{
                 label: "Harga",
                 backgroundColor: '#f6c23e',
                 hoverBackgroundColor: '#dda20a',
                 borderColor: '#f6c23e',
-                data: [@foreach($top_price_produks as $produk) {{ $produk->harga }}, @endforeach],
+                data: [
+                    @isset($top_price_produks)
+                        @foreach($top_price_produks as $produk)
+                            {{ $produk->harga }},
+                        @endforeach
+                    @endisset
+                ],
             }]
         },
         options: {

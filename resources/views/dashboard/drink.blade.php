@@ -20,10 +20,11 @@
             <div class="col-md-8">
                 <form action="{{ route('produk.drink.index') }}" method="GET" class="d-flex">
                     <div class="input-group input-group-sm mr-2">
+                        {{-- Disesuaikan untuk minuman --}}
                         <input type="text" name="search" class="form-control" placeholder="Cari nama minuman..." value="{{ request('search') }}">
                     </div>
                     <div class="input-group input-group-sm mr-2" style="max-width: 180px;">
-                        <select class="form-control" name="sort_by" onchange="this.form.submit()">
+                        <select class="form-control" name="sort_by">
                             <option value="terbaru" @if(request('sort_by') == 'terbaru') selected @endif>Urutkan: Terbaru</option>
                             <option value="terlama" @if(request('sort_by') == 'terlama') selected @endif>Urutkan: Terlama</option>
                             <option value="harga_terendah" @if(request('sort_by') == 'harga_terendah') selected @endif>Harga: Terendah</option>
@@ -32,9 +33,11 @@
                             <option value="nama_za" @if(request('sort_by') == 'nama_za') selected @endif>Nama: Z-A</option>
                         </select>
                     </div>
+                    <button class="btn btn-secondary btn-sm" type="submit"><i class="fas fa-filter"></i></button>
                 </form>
             </div>
             <div class="col-md-4 text-right">
+                {{-- Disesuaikan untuk minuman --}}
                 <a href="{{ route('produk.drink.export.pdf') }}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</a>
                 <a href="{{ route('produk.drink.export.excel') }}" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Excel</a>
             </div>
@@ -54,13 +57,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- Disesuaikan untuk minuman --}}
                     @forelse($drinks as $drink)
                     <tr class="{{ $drink->stok < 10 ? 'table-warning' : '' }}">
                         <td>
                             <img src="{{ $drink->gambar ? asset('storage/' . $drink->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$drink->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
                         </td>
                         <td><a href="{{ route('produk.show', $drink->id) }}">{{ $drink->nama }}</a></td>
-                        <td><span class="badge badge-success">{{ $drink->kategori->nama ?? 'N/A' }}</span></td>
+                        <td><span class="badge {{($drink->kategori->nama ?? '') == 'minuman' ? 'badge-success' : 'badge-primary'}}">{{ $drink->kategori->nama ?? 'N/A' }}</span></td>
                         <td>Rp {{ number_format($drink->harga) }}</td>
                         <td>
                             {{ $drink->stok }}
@@ -88,9 +92,40 @@
         </div>
         
         <div class="mt-3 d-flex justify-content-end">
+            {{-- Disesuaikan untuk minuman --}}
             {{ $drinks->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAll = document.getElementById('select-all');
+        const checkboxes = document.querySelectorAll('.checkbox-item');
+
+        selectAll.addEventListener('change', function () {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (!this.checked) {
+                    selectAll.checked = false;
+                } else {
+                    let allChecked = true;
+                    checkboxes.forEach(cb => {
+                        if (!cb.checked) { allChecked = false; }
+                    });
+                    selectAll.checked = allChecked;
+                }
+            });
+        });
+    });
+</script>
+--}}
+@endpush
