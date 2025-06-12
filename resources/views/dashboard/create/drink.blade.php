@@ -1,25 +1,26 @@
 @extends('layout')
 
-@section('header', 'Tambah Minuman')
+@section('title', 'Tambah Minuman')
+@section('header', 'Tambah Minuman Baru')
 
 @section('content')
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-white">
-        {{-- 
-          PERBAIKAN: Judul diubah menjadi "Tambah Minuman".
-          Sebelumnya mungkin tertulis "Tambah Makanan" di sini.
-        --}}
-        <h5 class="mb-0 fw-bold">Tambah Minuman</h5>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Formulir Data Minuman</h6>
     </div>
     <div class="card-body">
         {{-- 
-          Bagian ini memanggil formulir parsial (dashboard.form) dan mengirimkan
-          variabel yang diperlukan untuk menyimpan data minuman baru.
+          Baris ini memanggil formulir parsial dan meneruskan semua data yang diperlukan:
+          - 'action' untuk URL tujuan formulir.
+          - 'method' POST untuk membuat data baru.
+          - 'produk' diatur ke null karena ini adalah data baru.
+          - 'kategoris' berisi semua kategori dari database untuk ditampilkan di dropdown.
         --}}
         @include('dashboard.form', [
-            'action' => route('produk.drink.store'),
+            'action' => route('produk.food.store'),
             'method' => 'POST',
-            'produk' => null
+            'produk' => null,
+            'kategoris' => $kategoris
         ])
     </div>
 </div>
