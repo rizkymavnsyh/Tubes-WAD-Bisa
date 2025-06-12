@@ -22,10 +22,7 @@ class DashboardController extends Controller
         $total_food_stock = Produk::whereHas('kategori', function ($q) { $q->where('nama', 'makanan'); })->sum('stok');
         $total_drinks_stock = Produk::whereHas('kategori', function ($q) { $q->where('nama', 'minuman'); })->sum('stok');
         
-        // Mengambil 5 produk dengan stok terbanyak untuk chart bar
         $top_stock_produks = Produk::orderBy('stok', 'desc')->take(5)->get();
-        
-        // BARU: Mengambil 5 produk termahal untuk chart horizontal bar
         $top_price_produks = Produk::orderBy('harga', 'desc')->take(5)->get();
 
         return view('dashboard.index', compact(
@@ -33,7 +30,7 @@ class DashboardController extends Controller
             'total_food_stock',
             'total_drinks_stock',
             'top_stock_produks',
-            'top_price_produks' // Mengirim data baru ke view
+            'top_price_produks'
         ));
     }
 
