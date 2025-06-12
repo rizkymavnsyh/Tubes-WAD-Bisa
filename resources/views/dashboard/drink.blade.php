@@ -20,7 +20,6 @@
             <div class="col-md-8">
                 <form action="{{ route('produk.drink.index') }}" method="GET" class="d-flex">
                     <div class="input-group input-group-sm mr-2">
-                        {{-- Disesuaikan untuk minuman --}}
                         <input type="text" name="search" class="form-control" placeholder="Cari nama minuman..." value="{{ request('search') }}">
                     </div>
                     <div class="input-group input-group-sm mr-2" style="max-width: 180px;">
@@ -37,7 +36,6 @@
                 </form>
             </div>
             <div class="col-md-4 text-right">
-                {{-- Disesuaikan untuk minuman --}}
                 <a href="{{ route('produk.drink.export.pdf') }}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</a>
                 <a href="{{ route('produk.drink.export.excel') }}" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Excel</a>
             </div>
@@ -57,7 +55,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- Disesuaikan untuk minuman --}}
                     @forelse($drinks as $drink)
                     <tr class="{{ $drink->stok < 10 ? 'table-warning' : '' }}">
                         <td>
@@ -92,40 +89,9 @@
         </div>
         
         <div class="mt-3 d-flex justify-content-end">
-            {{-- Disesuaikan untuk minuman --}}
             {{ $drinks->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
 
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectAll = document.getElementById('select-all');
-        const checkboxes = document.querySelectorAll('.checkbox-item');
-
-        selectAll.addEventListener('change', function () {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (!this.checked) {
-                    selectAll.checked = false;
-                } else {
-                    let allChecked = true;
-                    checkboxes.forEach(cb => {
-                        if (!cb.checked) { allChecked = false; }
-                    });
-                    selectAll.checked = allChecked;
-                }
-            });
-        });
-    });
-</script>
---}}
-@endpush

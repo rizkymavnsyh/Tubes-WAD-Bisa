@@ -41,13 +41,10 @@
             </div>
         </div>
         
-        {{-- FORM AKSI MASSAL DIHAPUS --}}
-            
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead class="thead-light">
                     <tr>
-                        {{-- Hapus ini: <th width="3%"><input type="checkbox" id="select-all"></th> --}}
                         <th>Gambar</th>
                         <th>Nama Produk</th>
                         <th>Kategori</th>
@@ -60,7 +57,6 @@
                 <tbody>
                     @forelse($foods as $food)
                     <tr class="{{ $food->stok < 10 ? 'table-warning' : '' }}">
-                        {{-- Hapus ini: <td><input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $food->id }}"></td> --}}
                         <td>
                             <img src="{{ $food->gambar ? asset('storage/' . $food->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$food->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
                         </td>
@@ -85,7 +81,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center">Data tidak ditemukan.</td> {{-- COLSPAN DISESUAIKAN --}}
+                        <td colspan="7" class="text-center">Data tidak ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -99,33 +95,3 @@
 </div>
 
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectAll = document.getElementById('select-all');
-        const checkboxes = document.querySelectorAll('.checkbox-item');
-
-        selectAll.addEventListener('change', function () {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (!this.checked) {
-                    selectAll.checked = false;
-                } else {
-                    let allChecked = true;
-                    checkboxes.forEach(cb => {
-                        if (!cb.checked) { allChecked = false; }
-                    });
-                    selectAll.checked = allChecked;
-                }
-            });
-        });
-    });
-</script>
---}}
-@endpush
