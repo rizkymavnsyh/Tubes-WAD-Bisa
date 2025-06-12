@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\Api\ExternalApiController; // Impor controller baru
 
 // Rute utama
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -12,6 +13,12 @@ Route::resource('kategori', KategoriController::class)->except(['show']);
 
 // Rute untuk menampilkan detail produk
 Route::get('/produk/{id}', [DashboardController::class, 'show'])->name('produk.show');
+
+// ===================================
+// RUTE API EKSTERNAL (BARU)
+// ===================================
+Route::get('/external-recipes', [ExternalApiController::class, 'fetchRecipes'])->name('recipes.external');
+
 
 // ===================================
 // RUTE MAKANAN (FOOD)

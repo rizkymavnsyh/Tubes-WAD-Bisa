@@ -60,7 +60,6 @@
 
             <!-- Nav Item - Makanan -->
             <li class="nav-item {{ request()->routeIs('produk.food.*') ? 'active' : '' }}">
-                {{-- PERBAIKAN: Nama rute yang benar adalah 'produk.food.index' --}}
                 <a class="nav-link" href="{{ route('produk.food.index') }}">
                     <i class="fas fa-fw fa-utensils"></i>
                     <span>Data Makanan</span></a>
@@ -68,10 +67,24 @@
 
             <!-- Nav Item - Minuman -->
             <li class="nav-item {{ request()->routeIs('produk.drink.*') ? 'active' : '' }}">
-                {{-- PERBAIKAN: Nama rute yang benar adalah 'produk.drink.index' --}}
                 <a class="nav-link" href="{{ route('produk.drink.index') }}">
                     <i class="fas fa-fw fa-cocktail"></i>
                     <span>Data Minuman</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Pengembangan
+            </div>
+
+            <!-- Nav Item - Inspirasi Menu (Diperbarui) -->
+            <li class="nav-item {{ request()->routeIs('recipes.external') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('recipes.external') }}">
+                    <i class="fas fa-fw fa-lightbulb"></i>
+                    <span>Inspirasi Menu</span></a>
             </li>
 
             <!-- Divider -->
