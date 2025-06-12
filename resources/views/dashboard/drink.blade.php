@@ -20,6 +20,7 @@
             <div class="col-md-8">
                 <form action="{{ route('produk.drink.index') }}" method="GET" class="d-flex">
                     <div class="input-group input-group-sm mr-2">
+                        {{-- Disesuaikan untuk minuman --}}
                         <input type="text" name="search" class="form-control" placeholder="Cari nama minuman..." value="{{ request('search') }}">
                     </div>
                     <div class="input-group input-group-sm mr-2" style="max-width: 180px;">
@@ -36,30 +37,29 @@
                 </form>
             </div>
             <div class="col-md-4 text-right">
+                {{-- Disesuaikan untuk minuman --}}
                 <a href="{{ route('produk.drink.export.pdf') }}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</a>
                 <a href="{{ route('produk.drink.export.excel') }}" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Excel</a>
             </div>
         </div>
         
-        {{-- FORM AKSI MASSAL DIHAPUS --}}
-            
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead class="thead-light">
                     <tr>
-                        {{-- Hapus ini: <th width="3%"><input type="checkbox" id="select-all"></th> --}}
                         <th>Gambar</th>
                         <th>Nama Produk</th>
                         <th>Kategori</th>
                         <th>Harga</th>
                         <th>Stok</th>
+                        <th>Deskripsi</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- Disesuaikan untuk minuman --}}
                     @forelse($drinks as $drink)
                     <tr class="{{ $drink->stok < 10 ? 'table-warning' : '' }}">
-                        {{-- Hapus ini: <td><input type="checkbox" name="ids[]" class="checkbox-item" value="{{ $drink->id }}"></td> --}}
                         <td>
                             <img src="{{ $drink->gambar ? asset('storage/' . $drink->gambar) : 'https://placehold.co/80x80/EBF4FF/7F9CF5?text=N/A' }}" alt="{{$drink->nama}}" width="60" class="rounded" onerror="this.onerror=null;this.src='https://placehold.co/80x80/EBF4FF/7F9CF5?text=Error';">
                         </td>
@@ -72,6 +72,7 @@
                                 <i class="fas fa-exclamation-triangle text-warning ml-1" title="Stok rendah!"></i>
                             @endif
                         </td>
+                        <td>{{ Str::limit($drink->deskripsi, 50, '...') ?? 'N/A' }}</td>
                         <td class="text-center">
                             <a href="{{ route('produk.drink.edit', $drink->id) }}" class="btn btn-warning btn-circle btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                             <form action="{{ route('produk.drink.delete', $drink->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
@@ -83,7 +84,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center">Data tidak ditemukan.</td>
+                        <td colspan="7" class="text-center">Data tidak ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -91,6 +92,7 @@
         </div>
         
         <div class="mt-3 d-flex justify-content-end">
+            {{-- Disesuaikan untuk minuman --}}
             {{ $drinks->appends(request()->query())->links() }}
         </div>
     </div>
@@ -99,7 +101,7 @@
 @endsection
 
 @push('scripts')
-{{-- Hapus semua script ini yang berkaitan dengan select-all dan checkboxes --}}
+{{-- Menambahkan kembali bagian script yang dikomentari agar strukturnya sama persis dengan file food.blade.php --}}
 {{--
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -101,8 +101,6 @@
 @endsection
 
 @push('scripts')
-{{-- Hapus semua script ini yang berkaitan dengan select-all dan checkboxes --}}
-{{--
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const selectAll = document.getElementById('select-all');
