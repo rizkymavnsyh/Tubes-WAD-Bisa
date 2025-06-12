@@ -101,8 +101,6 @@
 @endsection
 
 @push('scripts')
-{{-- Menambahkan kembali bagian script yang dikomentari agar strukturnya sama persis dengan file food.blade.php --}}
-{{--
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const selectAll = document.getElementById('select-all');
