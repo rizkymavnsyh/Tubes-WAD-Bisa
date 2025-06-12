@@ -1,5 +1,4 @@
 <?php
-// app/Models/Produk.php
 
 namespace App\Models;
 
@@ -13,12 +12,12 @@ class Produk extends Model
     protected $table = 'produks';
     
     protected $fillable = [
-        'nama', // Changed from 'nama_produk' to 'nama'
+        'nama', 
         'kategori_id',
         'harga',
         'stok',
         'deskripsi',
-        'gambar' // Added 'gambar'
+        'gambar' 
     ];
 
     public function kategori()

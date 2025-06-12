@@ -1,5 +1,4 @@
 <?php
-// Buat controller baru: php artisan make:controller KategoriController --resource
 
 namespace App\Http\Controllers;
 

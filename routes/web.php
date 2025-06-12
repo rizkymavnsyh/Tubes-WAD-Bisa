@@ -5,13 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\Api\ExternalApiController;
 
-// Rute utama
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
-// Rute untuk manajemen kategori
 Route::resource('kategori', KategoriController::class)->except(['show']);
-
-// Rute untuk menampilkan detail produk
 Route::get('/produk/{id}', [DashboardController::class, 'show'])->name('produk.show');
 
 // ===================================
@@ -19,7 +14,6 @@ Route::get('/produk/{id}', [DashboardController::class, 'show'])->name('produk.s
 // ===================================
 Route::get('/external-recipes', [ExternalApiController::class, 'fetchRecipes'])->name('recipes.external');
 Route::get('/external-recipes/{id}', [ExternalApiController::class, 'showRecipe'])->name('recipes.show.external');
-
 
 // ===================================
 // RUTE MAKANAN (FOOD)

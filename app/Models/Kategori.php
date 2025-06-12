@@ -1,5 +1,4 @@
 <?php
-// Buat model baru: php artisan make:model Kategori
 
 namespace App\Models;
 
